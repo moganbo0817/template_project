@@ -21,5 +21,4 @@ CREATE TABLE `task`
 ) Engine=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='タスク';
 
 
-insert into `user`(name,password,`role`,created,modified) values 
-    ('moga','$2a$10$Z6MLpUf4WxfJxcII1kWTpeRPhmj7kAN5c2.iBRGgj8cspgvTklQNO','admin',TIMESTAMP '2022-12-18 09:43:57.038',TIMESTAMP '2022-12-18 09:43:57.038');
+--insert into `user`(name,password,`role`,created,modified) values ('moga','$2a$10$Z6MLpUf4WxfJxcII1kWTpeRPhmj7kAN5c2.iBRGgj8cspgvTklQNO','admin',TIMESTAMP '2022-12-18 09:43:57.038',TIMESTAMP '2022-12-18 09:43:57.038');
