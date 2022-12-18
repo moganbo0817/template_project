@@ -35,7 +35,7 @@ jobs:
     - run: |
         go install github.com/k0kubun/sqldef/cmd/mysqldef@latest
         mysqldef -u temp_project -p temp_project -h 127.0.0.1 -P 3306 temp_project < ./backend/_tools/mysql/schema.sql
-    - run: cd backend
     - run: go test ./... -coverprofile=coverage.out
+    working-directory: backend
     - name: report coverage
       uses: k1LoW/octocov-action@v0
