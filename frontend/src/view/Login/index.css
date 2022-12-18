@@ -1,0 +1,30 @@
+.login-row {
+    height: 969px;
+    background-color: #eee;
+  }
+  .login-row .logo {
+    width: 256px;
+    height: 256px;
+    text-align:  center;
+    background: url(../../logo.svg) no-repeat;
+    background-size: 100%;
+    margin: 0 auto 50px;
+  }
+  .login-row .logo span {
+    display: none;
+  }
+  .login-row .login-form {
+    padding: 60px;
+    background: #fff;
+    border-radius: 6px;
+  }
+  .login-row .login-form .btn-login {
+    width: 100%;
+  }
+  .login-row .login-form .btn-register {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .login-row .ant-input-affix-wrapper .ant-input {
+    min-height: auto;
+  }

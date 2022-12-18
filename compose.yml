@@ -1,0 +1,56 @@
+version: "3.9"
+# ref: https://docs.docker.com/compose/compose-file
+services:
+  app:
+    image: backend
+    build:
+      args:
+        - target=dev
+    environment:
+      TEMPLATE_PROJECT_ENV: dev
+      PORT: 8080
+      TEMPLATE_PROJECT_DB_HOST: db
+      TEMPLATE_PROJECT_DB_PORT: 3306
+      TEMPLATE_PROJECT_DB_USER: temp_project
+      TEMPLATE_PROJECT_DB_PASSWORD: temp_project
+      TEMPLATE_PROJECT_DB_NAME: temp_project
+      TEMPLATE_PROJECT_REDIS_HOST: redis
+      TEMPLATE_PROJECT_REDIS_PORT: 6379
+    volumes:
+      - ./backend:/app
+    ports:
+      - "18000:8080"
+    links:
+      - db
+  db:
+    image: mysql:8.0.29
+    platform: linux/amd64
+    container_name: db
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: temp_project
+      MYSQL_PASSWORD: temp_project
+      MYSQL_DATABASE: temp_project
+    volumes:
+      - db-data:/var/lib/mysql
+      - $PWD/_tools/mysql/conf.d:/etc/mysql/conf.d:cached
+    ports:
+      - "33306:3306"
+  redis:
+    image: "redis:latest"
+    container_name: redis
+    ports:
+      - "36379:6379"
+    volumes:
+      - redis-data:/data
+  redoc:
+    image: 'redocly/redoc'
+    ports:
+      - '9000:80'
+    volumes:
+      - './openapi.yaml:/usr/share/nginx/html/openapi.yaml'
+    environment:
+      - 'SPEC_URL=openapi.yaml'
+volumes:
+  db-data:
+  redis-data:

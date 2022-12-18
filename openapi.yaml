@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: Template-Project
+  description: Template-Project by Go and React
+  version: 0.0.0
+servers:
+  - url: http://localhost:18000
+paths:
+  /login:
+    get:
+      operationId: openapitutorial.controller.health.call
+      summary: LOGIN
+      description: LOGINを行い、access_tokenを返却する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_name
+                - password
+              properties:
+                user_name:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: ログインOK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_login_response'
+  /tasks:
+    get:
+      operationId: openapitutorial.controller.tasks.call
+      summary: タスク一覧取得
+      description: タスク一覧取得
+      responses:
+        '200':
+          description: 取得OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_tasks_response'                
+components:
+  schemas:
+    get_login_response:
+      description: ログインOK
+      type: object
+      properties:
+        access_token:
+          description: アクセストークン
+          type: string
+          enum:
+            - eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzEzNTA0NTksImlhdCI6MTY3MTM0ODY1OSwiaXNzIjoiZ2l0aHViLmNvbS9tb2dhbmJvMDgxNy9nb190b2RvX2FwcCIsImp0aSI6ImI0OTEzYWVjLWZmNTItNGVlMC1iYzA0LTgxMjk4ZDA0YmZmZCIsInJvbGUiOiJhZG1pbiIsInN1YiI6ImFjY2Vzc190b2tlbiIsInVzZXJfbmFtZSI6Im1vZ2FhZG1pbiJ9.a9rA-xSGAyGolj3rr_UDjT6_3SrjnudV6-G4o8p2T95UU18PQh1ZTeedA13aIlqIB24kaIetFkrblaw3tiZAl97fEjxUd_lajJ2rapxDCNWIi9UdteU-R5L7WiQFfSGImByS6T9Uz5AAp_fts4kZj8oxbmVz7uVmy4fRWHxxwvn4aOOJLxhrNMjfm1AdJXJ479DSFi8t4q4VAUD8cmDpT86Afs2P4Pkup6Q28bra6H9UTBKJiioZWIOgka7aLw4XOitWYXcJOJwmGWn1tLhp0NwERlTuFd5sFhTPN849rYg_W3Wetv7eK40j1cSzCEIm-kYgBQrlxqW50DbrWockgVyARI65tpOEbjmCONKgMKlmgiS0D4EjacAbOKAss6WqN7GtOQ9bXunz-Imhdufo9uug13zPf5WEYRHVACYNrzLXYrvFwn8a3jGl7xbZ5jxAb6KwVNe8o2xDs_Sls3De8jP0hf7k63Ps6LKJ_8I58oKT6a1ODBflH-DpNpex0Rky96vs3Np7KQE-7SrX8LR07bJsdsk5DRIDfZVh3q9nu1-ydMiD8wk92SlKIGbpitND8mw0eiyw1gWbfkyt5fEe0h6-0XhgQi05A-t5zdk_06UYHi--TYJbqyM0UfMdsaynnlguxTALWv8GmDSToNJNHixucjPvGFIsUaG5D8zHLd0
+      required:
+        - status
+    get_tasks_response:
+      description: ログインOK
+      type: array
+      items:
+        properties:
+          taskid:
+            type: number
+            enum:
+              - 1
+          task_name:
+            type: string
+            enum:
+              - hoge
