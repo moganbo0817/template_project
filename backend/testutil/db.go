@@ -16,7 +16,7 @@ func OpenDBForTest(t *testing.T) *sqlx.DB {
 	}
 	db, err := sql.Open(
 		"mysql",
-		fmt.Sprintf("todo:todo@tcp(127.0.0.1:%d)/todo?parseTime=true", port),
+		fmt.Sprintf("temp_project:temp_project@tcp(127.0.0.1:%d)/temp_project?parseTime=true", port),
 	)
 	if err != nil {
 		t.Fatal(err)
