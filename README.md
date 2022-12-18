@@ -4,7 +4,7 @@ npm ci （初回起動　and package.jsonに更新が入った時のみ実施\
 npm start
 
 ## backend
-go mod tidy
+go mod tidy\
 docker compose up -d\
 デバッグ起動時\
 VSCodeのRun（上）→Start Debugging
