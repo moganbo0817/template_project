@@ -83,6 +83,7 @@ func TestRepository_ListTask(t *testing.T) {
 		t.Fatal(err)
 	}
 	wants, id := prepareTasks(ctx, t, tx)
+	want := wants[0]
 
 	sut := &Repository{}
 	gots, err := sut.ListTask(ctx, tx, id)
@@ -98,7 +99,7 @@ func TestRepository_ListTask(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if d := cmp.Diff(gots.ID, wants[0].ID); len(d) != 0 { //entityで比べたいが妥協
+	if d := cmp.Diff(&gots, want); len(d) != 0 {
 		t.Errorf("differs:(-got +want\n%s", d)
 	}
 }
