@@ -12,7 +12,7 @@ import (
 	"github.com/moganbo0817/template_project/testutil"
 )
 
-func prepareTasks(ctx context.Context, t *testing.T, con Execer) entity.Tasks {
+func prepareTasks(ctx context.Context, t *testing.T, con Execer) (entity.Tasks, int64) {
 	t.Helper()
 	// DELETEもこれでいける
 	if _, err := con.ExecContext(ctx, "DELETE FROM task;"); err != nil {
@@ -53,7 +53,7 @@ func prepareTasks(ctx context.Context, t *testing.T, con Execer) entity.Tasks {
 	wants[0].ID = entity.TaskID(id)
 	wants[1].ID = entity.TaskID(id + 1)
 	wants[2].ID = entity.TaskID(id + 2)
-	return wants
+	return wants, id
 }
 
 func TestRepository_ListTasks(t *testing.T) {
@@ -63,7 +63,7 @@ func TestRepository_ListTasks(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wants := prepareTasks(ctx, t, tx)
+	wants, _ := prepareTasks(ctx, t, tx)
 
 	sut := &Repository{}
 	gots, err := sut.ListTasks(ctx, tx)
@@ -71,6 +71,34 @@ func TestRepository_ListTasks(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if d := cmp.Diff(gots, wants); len(d) != 0 {
+		t.Errorf("differs:(-got +want\n%s", d)
+	}
+}
+
+func TestRepository_ListTask(t *testing.T) {
+	ctx := context.Background()
+	tx, err := testutil.OpenDBForTest(t).BeginTxx(ctx, nil)
+	t.Cleanup(func() { _ = tx.Rollback() })
+	if err != nil {
+		t.Fatal(err)
+	}
+	wants, id := prepareTasks(ctx, t, tx)
+
+	sut := &Repository{}
+	gots, err := sut.ListTask(ctx, tx, id)
+
+	// okTask := &entity.Task{
+	// 	ID:       entity.TaskID(id),
+	// 	Title:    wants[0].Title,
+	// 	Status:   wants[0].Status,
+	// 	Created:  wants[0].Created,
+	// 	Modified: wants[0].Modified,
+	// }
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if d := cmp.Diff(gots.ID, wants[0].ID); len(d) != 0 { //entityで比べたいが妥協
 		t.Errorf("differs:(-got +want\n%s", d)
 	}
 }
