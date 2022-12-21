@@ -2,36 +2,34 @@ package handler
 
 import (
 	"net/http"
-
-	"github.com/moganbo0817/template_project/entity"
 )
 
 type ListTask struct {
-	Service ListTasksService
-}
-
-type task struct {
-	ID     entity.TaskID     `json:"id"`
-	Title  string            `json:"title"`
-	Status entity.TaskStatus `json:"status"`
+	Service ListTaskService
 }
 
 func (lt *ListTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	tasks, err := lt.Service.ListTasks(ctx)
+	// TODO requestからパスの取り出し、０件ハンドリング
+	task, err := lt.Service.ListTask(ctx, 14)
 	if err != nil {
 		RespondJSON(ctx, w, &ErrResponse{
 			Message: err.Error(),
 		}, http.StatusInternalServerError)
 		return
 	}
-	rsp := []task{}
-	for _, t := range tasks {
-		rsp = append(rsp, task{
-			ID:     t.ID,
-			Title:  t.Title,
-			Status: t.Status,
-		})
-	}
+	//rsp := task{}
+	rsp := struct {
+		ID     int    `json:"id"`
+		Title  string `json:"title"`
+		Status string `json:"status"`
+	}{ID: int(task.ID), Title: task.Title, Status: string(task.Status)}
+	// for _, t := range tasks {
+	// 	rsp = append(rsp, task{
+	// 		ID:     t.ID,
+	// 		Title:  t.Title,
+	// 		Status: t.Status,
+	// 	})
+	// }
 	RespondJSON(ctx, w, rsp, http.StatusOK)
 }

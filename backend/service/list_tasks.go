@@ -8,13 +8,13 @@ import (
 	"github.com/moganbo0817/template_project/store"
 )
 
-type ListTask struct {
+type ListTasks struct {
 	DB   store.Queryer
-	Repo TaskLister
+	Repo TaskListers
 }
 
-func (l *ListTask) ListTask(ctx context.Context, id int64) (*entity.Task, error) {
-	ts, err := l.Repo.ListTask(ctx, l.DB, id)
+func (l *ListTasks) ListTasks(ctx context.Context) (entity.Tasks, error) {
+	ts, err := l.Repo.ListTasks(ctx, l.DB)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list: %w", err)
 	}
