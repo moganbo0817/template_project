@@ -63,7 +63,7 @@ func NewMux(ctx context.Context, cfg *config.Config) (http.Handler, func(), erro
 		r.Use(handler.AuthMiddleware(jwter))
 		r.Post("/", at.ServeHTTP)
 		r.Get("/", lts.ServeHTTP)
-		r.Get("/{id}", lt.ServeHTTP)
+		r.Get("/{userId}", lt.ServeHTTP)
 	})
 
 	ru := &handler.RegisterUser{

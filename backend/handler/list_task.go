@@ -2,6 +2,9 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type ListTask struct {
@@ -10,8 +13,9 @@ type ListTask struct {
 
 func (lt *ListTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	// TODO requestからパスの取り出し、０件ハンドリング
-	task, err := lt.Service.ListTask(ctx, 14)
+	id := chi.URLParam(r, "userId")
+	ids, _ := strconv.ParseInt(id, 10, 64) // あとできれいに書く
+	task, err := lt.Service.ListTask(ctx, ids)
 	if err != nil {
 		RespondJSON(ctx, w, &ErrResponse{
 			Message: err.Error(),
