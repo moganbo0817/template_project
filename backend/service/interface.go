@@ -7,13 +7,17 @@ import (
 	"github.com/moganbo0817/template_project/store"
 )
 
-//go:generate go run github.com/matryer/moq -out moq_test.go . TaskAdder TaskLister UserRegister UserGetter TokenGenerator
+//go:generate go run github.com/matryer/moq -out moq_test.go . TaskAdder TaskListers TaskLister UserRegister UserGetter TokenGenerator
 type TaskAdder interface {
 	AddTask(ctx context.Context, db store.Execer, t *entity.Task) error
 }
 
-type TaskLister interface {
+type TaskListers interface {
 	ListTasks(ctx context.Context, db store.Queryer) (entity.Tasks, error)
+}
+
+type TaskLister interface {
+	ListTask(ctx context.Context, db store.Queryer, id int64) (*entity.Task, error)
 }
 
 type UserRegister interface {
