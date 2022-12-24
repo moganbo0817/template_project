@@ -75,7 +75,7 @@ const data: DataType[] = [
 //const Book: React.FC = () => <Table columns={columns} dataSource={data} />;
 const Book: React.FC = () => {
   return (
-    <Admin activeKey={"1"}>
+    <Admin activeKey={"2"} activeOptionKey={"public"}>
       <Table columns={columns} dataSource={data} />
     </Admin>
   );

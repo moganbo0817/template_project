@@ -11,7 +11,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 //const Book: React.FC = () => <Table columns={columns} dataSource={data} />;
-const BookDetail: React.FC = () => {
+const TaskDetail: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm<task>();
 
@@ -65,7 +65,7 @@ const BookDetail: React.FC = () => {
   }, []);
 
   return (
-    <Admin activeKey="2">
+    <Admin activeKey={"1"} activeOptionKey={"public"}>
       <Form
         name="basic"
         form={form}
@@ -123,4 +123,4 @@ const BookDetail: React.FC = () => {
   );
 };
 
-export default BookDetail;
+export default TaskDetail;

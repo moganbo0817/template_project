@@ -37,7 +37,7 @@ const BookDetail: React.FC = () => {
   };
 
   return (
-    <Admin activeKey="1">
+    <Admin activeKey={"2"} activeOptionKey={"public"}>
       <Form
         name="basic"
         labelCol={{ span: 4 }}

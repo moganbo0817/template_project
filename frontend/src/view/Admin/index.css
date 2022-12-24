@@ -1,6 +1,10 @@
 .logo {
     height: 32px;
     margin: 16px;
+    display: grid;
+    color:#ffff;
+    font-weight:  bold;
+    place-items: center;
     background: rgba(255, 255, 255, 0.3);
   }
   
