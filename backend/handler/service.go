@@ -6,7 +6,7 @@ import (
 	"github.com/moganbo0817/template_project/entity"
 )
 
-//go:generate go run github.com/matryer/moq -out moq_test.go . ListTasksService ListTaskService AddTaskService RegisterUserService LoginService
+//go:generate go run github.com/matryer/moq -out moq_test.go . ListTasksService ListTaskService AddTaskService UpdateTaskService RegisterUserService LoginService
 type ListTasksService interface {
 	ListTasks(ctx context.Context) (entity.Tasks, error)
 }
@@ -17,6 +17,10 @@ type ListTaskService interface {
 
 type AddTaskService interface {
 	AddTask(ctx context.Context, title string) (*entity.Task, error)
+}
+
+type UpdateTaskService interface {
+	UpdateTask(ctx context.Context, id int64, title string, status string) (*entity.Task, error)
 }
 
 type RegisterUserService interface {
