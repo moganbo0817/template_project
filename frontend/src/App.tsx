@@ -19,6 +19,7 @@ function App() {
         <Route path={`/task`} element={<Task />} />
         <Route path={`/bookdetail/:id`} element={<BookDetail />} />
         <Route path={`/taskdetail/:id`} element={<TaskDetail />} />
+        <Route path={`/taskdetail`} element={<TaskDetail />} />
       </Routes>
     </BrowserRouter>
   );
