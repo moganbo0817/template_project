@@ -88,14 +88,6 @@ func TestRepository_ListTask(t *testing.T) {
 	sut := &Repository{}
 	gots, err := sut.ListTask(ctx, tx, id)
 
-	// okTask := &entity.Task{
-	// 	ID:       entity.TaskID(id),
-	// 	Title:    wants[0].Title,
-	// 	Status:   wants[0].Status,
-	// 	Created:  wants[0].Created,
-	// 	Modified: wants[0].Modified,
-	// }
-
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -158,7 +150,6 @@ func TestRepository_AddTask(t *testing.T) {
 // 	tx.Commit()
 // }
 
-// ついでにUpdate、selectすれば
 func TestRepository_UpdateTask(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
@@ -177,8 +168,28 @@ func TestRepository_UpdateTask(t *testing.T) {
 	}
 
 	sut := &Repository{Clocker: c}
-	if err := sut.UpdateTask(ctx, tx, okTask2); err != nil {
+	if _, err := sut.UpdateTask(ctx, tx, okTask2); err != nil {
 		t.Errorf("want no error, but got %v", err)
 	}
 	tx.Commit()
+}
+
+func TestRepository_DeleteTask(t *testing.T) {
+	ctx := context.Background()
+	tx, err := testutil.OpenDBForTest(t).BeginTxx(ctx, nil)
+	t.Cleanup(func() { _ = tx.Rollback() })
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, id := prepareTasks(ctx, t, tx)
+
+	sut := &Repository{}
+	num, err := sut.DeleteTask(ctx, tx, id)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if num != 1 {
+		t.Fatalf("unexpected error")
+	}
 }

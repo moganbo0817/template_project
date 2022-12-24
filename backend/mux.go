@@ -64,12 +64,17 @@ func NewMux(ctx context.Context, cfg *config.Config) (http.Handler, func(), erro
 		Service: &service.ListTask{DB: db, Repo: &r},
 	}
 
+	dt := &handler.DeleteTask{
+		Service: &service.DeleteTask{DB: db, Repo: &r},
+	}
+
 	mux.Route("/tasks", func(r chi.Router) {
 		r.Use(handler.AuthMiddleware(jwter))
 		r.Post("/", at.ServeHTTP)
-		r.Put("/{userId}", ut.ServeHTTP)
+		r.Put("/{id}", ut.ServeHTTP)
 		r.Get("/", lts.ServeHTTP)
-		r.Get("/{userId}", lt.ServeHTTP)
+		r.Get("/{id}", lt.ServeHTTP)
+		r.Delete("/{id}", dt.ServeHTTP)
 	})
 
 	ru := &handler.RegisterUser{

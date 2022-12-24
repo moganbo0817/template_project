@@ -51,16 +51,37 @@ func (r *Repository) ListTask(
 
 func (r *Repository) UpdateTask(
 	ctx context.Context, db Execer, t *entity.Task,
-) error {
+) (int64, error) {
 	t.Created = r.Clocker.Now()
 	t.Modified = r.Clocker.Now()
 	sql := `Update task set title =?,status=? where id = ?;`
-	_, err := db.ExecContext(
+	result, err := db.ExecContext(
 		ctx, sql, t.Title, t.Status,
 		t.ID,
 	)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+	num, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+	return num, err
+}
+
+func (r *Repository) DeleteTask(
+	ctx context.Context, db Execer, id int64,
+) (int64, error) {
+	sql := `Delete from task where id = ?;`
+	result, err := db.ExecContext(
+		ctx, sql, id,
+	)
+	if err != nil {
+		return 0, err
+	}
+	num, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+	return num, err
 }
