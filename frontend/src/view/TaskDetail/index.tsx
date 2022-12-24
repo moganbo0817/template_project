@@ -66,7 +66,7 @@ const BookDetail: React.FC = () => {
   }, []);
 
   return (
-    <Admin activeKey="2">
+    <Admin activeKey={"1"} activeOptionKey={"public"}>
       <Form
         name="basic"
         form={form}
