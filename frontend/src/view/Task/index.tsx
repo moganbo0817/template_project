@@ -5,6 +5,7 @@ import Admin from "../Admin"
 import httpClient from "../../utils/httpClient"
 import {task} from "../../model/task"
 import { Link } from "react-router-dom";
+import TaskDetail from '../TaskDetail';
 
 interface DataType {
   key: string; // stringからnumberに変更
@@ -84,7 +85,7 @@ const task=(async()=>{
 });
 
 return (
-   <Admin activeKey='2'>
+  <Admin activeKey={"1"} activeOptionKey={"public"}>
     <Col span={24} style={{ textAlign: 'right' }}>
     <Button type="primary" href="/taskdetail">addtask</Button>
     </Col>

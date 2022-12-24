@@ -31,27 +31,20 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Book", "1", <PieChartOutlined />),
-  getItem("Task", "2", <DesktopOutlined />),
-  getItem("User", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
+  getItem("Public", "public", <TeamOutlined />, [
+    getItem("Tasks", "1"),
+    getItem("Todo", "2"),
   ]),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
+  getItem("Admin", "admin", <UserOutlined />, [
+    getItem("User", "3"),
+    getItem("Todo", "4"),
   ]),
-  getItem("Files", "9", <FileOutlined />),
 ];
-
-// type Props = {
-//   children?: React.ReactNode;
-// };
 
 type AdminPropsType = {
   children: any;
   activeKey: string;
+  activeOptionKey: string;
 };
 
 const Admin: React.FC<any> = (props: AdminPropsType) => {
@@ -66,9 +59,9 @@ const Admin: React.FC<any> = (props: AdminPropsType) => {
     // URLでルーティングするのとDOMの表示、非表示どっちがいいんだ
     setMenuNo(item.key);
     if (item.key == 1) {
-      navigate("/book");
-    } else if (item.key == 2) {
       navigate("/task");
+    } else if (item.key == 2) {
+      navigate("/book");
     }
   };
 
@@ -83,14 +76,15 @@ const Admin: React.FC<any> = (props: AdminPropsType) => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
-        <div className="logo" />
+        <div className="logo">Template Project</div>
         <Menu
           theme="dark"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={[props.activeKey]}
+          defaultOpenKeys={[props.activeOptionKey]}
           mode="inline"
           items={items}
           onClick={menuClickHandle}
-          selectedKeys={[props.activeKey]}
+          selectable={true}
         />
       </Sider>
       <Layout className="site-layout">
