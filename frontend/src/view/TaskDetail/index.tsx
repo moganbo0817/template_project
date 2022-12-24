@@ -11,7 +11,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 //const Book: React.FC = () => <Table columns={columns} dataSource={data} />;
-const TaskDetail: React.FC = () => {
+const BookDetail: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm<task>();
 
@@ -56,9 +56,10 @@ const TaskDetail: React.FC = () => {
   };
 
   useEffect(() => {
-    const param = window.location.search;
-    if (param) {
-      form.setFieldValue('id',param.slice(1));
+    const param = window.location.pathname.split('/');
+    if (param[2]) {
+      form.setFieldValue('id',param[2]);
+      // ここで初期値いれる
     }
     console.log(param);
 
@@ -123,4 +124,4 @@ const TaskDetail: React.FC = () => {
   );
 };
 
-export default TaskDetail;
+export default BookDetail;

@@ -21,7 +21,11 @@ type TaskLister interface {
 }
 
 type TaskUpdate interface {
-	UpdateTask(ctx context.Context, db store.Execer, t *entity.Task) error
+	UpdateTask(ctx context.Context, db store.Execer, t *entity.Task) (int64, error)
+}
+
+type TaskDelete interface {
+	DeleteTask(ctx context.Context, db store.Execer, id int64) (int64, error)
 }
 
 type UserRegister interface {

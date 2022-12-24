@@ -46,7 +46,7 @@ const columns: ColumnsType<DataType> = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <Link to={"/taskdetail?" + record.id}>Detail</Link>
+        <Link to={"/taskdetail/" + record.id}>Detail</Link>
       </Space>
     ),
   },

@@ -13,15 +13,15 @@ type UpdateTask struct {
 	Repo TaskUpdate
 }
 
-func (u *UpdateTask) UpdateTask(ctx context.Context, id int64, title, status string) (*entity.Task, error) {
+func (u *UpdateTask) UpdateTask(ctx context.Context, id int64, title, status string) (int64, error) {
 	t := &entity.Task{
 		ID:     entity.TaskID(id),
 		Title:  title,
 		Status: entity.TaskStatusTodo,
 	}
-	err := u.Repo.UpdateTask(ctx, u.DB, t)
+	num, err := u.Repo.UpdateTask(ctx, u.DB, t)
 	if err != nil {
-		return nil, fmt.Errorf("failed to register: %w", err)
+		return 0, fmt.Errorf("failed to register: %w", err)
 	}
-	return t, nil
+	return num, nil
 }

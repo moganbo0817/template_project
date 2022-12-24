@@ -7,11 +7,11 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-type ListTask struct {
-	Service ListTaskService
+type DeleteTask struct {
+	Service DeleteTaskService
 }
 
-func (lt *ListTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (dt *DeleteTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
@@ -20,17 +20,21 @@ func (lt *ListTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}, http.StatusInternalServerError)
 		return
 	}
-	task, err := lt.Service.ListTask(ctx, id)
+
+	// Service呼び出し
+	num, err := dt.Service.DeleteTask(ctx, id)
+
 	if err != nil {
 		RespondJSON(ctx, w, &ErrResponse{
 			Message: err.Error(),
 		}, http.StatusInternalServerError)
 		return
 	}
+
+	// response成形
 	rsp := struct {
-		ID     int    `json:"id"`
-		Title  string `json:"title"`
-		Status string `json:"status"`
-	}{ID: int(task.ID), Title: task.Title, Status: string(task.Status)}
+		ID int `json:"count"`
+	}{ID: int(num)}
+
 	RespondJSON(ctx, w, rsp, http.StatusOK)
 }

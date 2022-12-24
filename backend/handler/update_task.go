@@ -41,7 +41,7 @@ func (ut *UpdateTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if id, _ := strconv.ParseInt(chi.URLParam(r, "userId"), 10, 64); id != b.Id {
+	if id, _ := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64); id != b.Id {
 		RespondJSON(ctx, w, &ErrResponse{
 			Message: "更新対象のユーザが不正です。",
 		}, http.StatusBadRequest)
@@ -49,7 +49,7 @@ func (ut *UpdateTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Service呼び出し
-	t, err := ut.Service.UpdateTask(ctx, b.Id, b.Title, string(b.Status))
+	num, err := ut.Service.UpdateTask(ctx, b.Id, b.Title, string(b.Status))
 
 	if err != nil {
 		RespondJSON(ctx, w, &ErrResponse{
@@ -60,8 +60,8 @@ func (ut *UpdateTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// response成形
 	rsp := struct {
-		ID int `json:"id"`
-	}{ID: int(t.ID)}
+		ID int `json:"count"`
+	}{ID: int(num)}
 
 	RespondJSON(ctx, w, rsp, http.StatusOK)
 }

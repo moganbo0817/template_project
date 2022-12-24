@@ -17,7 +17,8 @@ function App() {
         <Route path={`/`} element={<Login />} />
         <Route path={`/book`} element={<Book />} />
         <Route path={`/task`} element={<Task />} />
-        <Route path={`/bookdetail`} element={<BookDetail />} />
+        <Route path={`/bookdetail/:id`} element={<BookDetail />} />
+        <Route path={`/taskdetail/:id`} element={<TaskDetail />} />
         <Route path={`/taskdetail`} element={<TaskDetail />} />
       </Routes>
     </BrowserRouter>
