@@ -2,8 +2,8 @@ version: "3.9"
 # ref: https://docs.docker.com/compose/compose-file
 services:
   app:
-    image: backend
-    build:
+    build: 
+      dockerfile: ./backend/Dockerfile
       args:
         - target=dev
     environment:
