@@ -15,7 +15,7 @@ const tailLayout = {
 };
 
 //const Book: React.FC = () => <Table columns={columns} dataSource={data} />;
-const BookDetail: React.FC = () => {
+const TaskDetail: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm<task>();
   const [task, setTask] = useState<task>();
@@ -174,4 +174,4 @@ const BookDetail: React.FC = () => {
   );
 };
 
-export default BookDetail;
+export default TaskDetail;
