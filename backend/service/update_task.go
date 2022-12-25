@@ -17,7 +17,7 @@ func (u *UpdateTask) UpdateTask(ctx context.Context, id int64, title, status str
 	t := &entity.Task{
 		ID:     entity.TaskID(id),
 		Title:  title,
-		Status: entity.TaskStatusTodo,
+		Status: entity.TaskStatus(status),
 	}
 	num, err := u.Repo.UpdateTask(ctx, u.DB, t)
 	if err != nil {

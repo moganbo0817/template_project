@@ -1,42 +1,42 @@
 import React, { useState,useEffect } from "react";
 import { Space, Table, Tag, Select, Row, Col } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import './index.css';
 import Admin from "../Admin";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import {task} from "../../model/task"
 import httpClient from "../../utils/httpClient"
 
-const { TextArea } = Input;
 const { Option } = Select;
 
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
+
 //const Book: React.FC = () => <Table columns={columns} dataSource={data} />;
-const BookDetail: React.FC = () => {
+const TaskDetail: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm<task>();
+  const [task, setTask] = useState<task>();
 
 
   const navigate = useNavigate();
 
   const onFinish = async(values: any) => {
-    try{
-      if (form.getFieldValue('id')){
-        // updateは後々作ろうか
-        return;
-      }
+    if (window.confirm("登録/更新しますか?")) {
       const req:task = {
-        id:0,
+        id:form.getFieldValue('id'),
         title:form.getFieldValue('title'),
-        status:"todo",
-      } 
-      const res = await httpClient.post<task>("/tasks",req);
-      form.setFieldValue('id',res.data.id);
-      messageApi.open({
-        type: "success",
-        content: "This is a success message",
-      });
-    } catch(err) {
-      console.log("error");
+        status:form.getFieldValue('status'),
+      }
+      if (form.getFieldValue('id')){
+        // update
+        updateTask(req);
+      } else {
+        // insert
+        insertTask(req);
+      }
     }
   };
 
@@ -51,7 +51,7 @@ const BookDetail: React.FC = () => {
     console.log("Change:", e.target.value);
   };
 
-  const onClick = () => {
+  const onClickBack = () => {
     navigate("/task");
   };
 
@@ -59,11 +59,64 @@ const BookDetail: React.FC = () => {
     const param = window.location.pathname.split('/');
     if (param[2]) {
       form.setFieldValue('id',param[2]);
-      // ここで初期値いれる
+      initTask(param[2]);
     }
-    console.log(param);
-
   }, []);
+
+  const initTask = async(id: string) => {
+    try{
+      const res = await httpClient.get<task>(`/tasks/${id}`);
+      form.setFieldValue('id',res.data.id);
+      setTask(res.data);
+      form.resetFields();
+    } catch(err) {
+      console.log("error");
+    }
+  };
+
+  const insertTask = async(task: task) => {
+    try{
+      const res = await httpClient.post<task>("/tasks",task); 
+      form.setFieldValue('id',res.data.id);
+      messageApi.open({
+        type: "success",
+        content: "This is a success message",
+      });
+      navigate("/taskdetail/" + res.data.id);
+    } catch(err) {
+      console.log("error");
+    }
+  };
+
+  const updateTask = async(task: task) => {
+    try{
+      await httpClient.put<number>(`/tasks/${form.getFieldValue('id')}`,task); 
+      messageApi.open({
+        type: "success",
+        content: "This is a success message",
+      });
+    } catch(err) {
+      console.log("error");
+    }
+  };
+
+  const deleteTask = async() => {
+    if (window.confirm("削除してもよろしいですか?")) {
+      try{
+        await httpClient.delete<number>(`/tasks/${form.getFieldValue('id')}`); 
+        messageApi.open({
+          type: "success",
+          content: "This is a success message",
+        });
+        form.setFieldValue('id',undefined);
+        form.setFieldValue('title',undefined);
+        form.setFieldValue('status',undefined);
+        navigate("/taskdetail");
+      } catch(err) {
+        console.log("error");
+      }
+    }
+  };
 
   return (
     <Admin activeKey={"1"} activeOptionKey={"public"}>
@@ -72,7 +125,7 @@ const BookDetail: React.FC = () => {
         form={form}
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 20 }}
-        initialValues={{ remember: true }}
+        initialValues={task}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -103,25 +156,22 @@ const BookDetail: React.FC = () => {
             <Option value="done">done</Option>
           </Select>
         </Form.Item>
-
         <Form.Item wrapperCol={{ offset: 4, span: 30 }}>
-          <Row gutter={2}>
-            <Col span={20}>
-              {contextHolder}
-              <Button type="primary" htmlType="submit" >
-                Submit
-              </Button>
-            </Col>
-            <Col span={4}>
-              <Button type="primary" onClick={onClick}>
-                Back
-              </Button>
-            </Col>
-          </Row>
+          {contextHolder}
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+          {contextHolder}
+          <Button type="primary" onClick={deleteTask} danger>
+            Delete
+          </Button>
+          <Button  onClick={onClickBack}>
+            Back
+          </Button>
         </Form.Item>
       </Form>
     </Admin>
   );
 };
 
-export default BookDetail;
+export default TaskDetail;
