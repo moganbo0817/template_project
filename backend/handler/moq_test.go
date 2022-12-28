@@ -219,6 +219,162 @@ func (mock *AddTaskServiceMock) AddTaskCalls() []struct {
 	return calls
 }
 
+// Ensure, that UpdateTaskServiceMock does implement UpdateTaskService.
+// If this is not the case, regenerate this file with moq.
+var _ UpdateTaskService = &UpdateTaskServiceMock{}
+
+// UpdateTaskServiceMock is a mock implementation of UpdateTaskService.
+//
+//	func TestSomethingThatUsesUpdateTaskService(t *testing.T) {
+//
+//		// make and configure a mocked UpdateTaskService
+//		mockedUpdateTaskService := &UpdateTaskServiceMock{
+//			UpdateTaskFunc: func(ctx context.Context, id int64, title string, status string) (int64, error) {
+//				panic("mock out the UpdateTask method")
+//			},
+//		}
+//
+//		// use mockedUpdateTaskService in code that requires UpdateTaskService
+//		// and then make assertions.
+//
+//	}
+type UpdateTaskServiceMock struct {
+	// UpdateTaskFunc mocks the UpdateTask method.
+	UpdateTaskFunc func(ctx context.Context, id int64, title string, status string) (int64, error)
+
+	// calls tracks calls to the methods.
+	calls struct {
+		// UpdateTask holds details about calls to the UpdateTask method.
+		UpdateTask []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+			// ID is the id argument value.
+			ID int64
+			// Title is the title argument value.
+			Title string
+			// Status is the status argument value.
+			Status string
+		}
+	}
+	lockUpdateTask sync.RWMutex
+}
+
+// UpdateTask calls UpdateTaskFunc.
+func (mock *UpdateTaskServiceMock) UpdateTask(ctx context.Context, id int64, title string, status string) (int64, error) {
+	if mock.UpdateTaskFunc == nil {
+		panic("UpdateTaskServiceMock.UpdateTaskFunc: method is nil but UpdateTaskService.UpdateTask was just called")
+	}
+	callInfo := struct {
+		Ctx    context.Context
+		ID     int64
+		Title  string
+		Status string
+	}{
+		Ctx:    ctx,
+		ID:     id,
+		Title:  title,
+		Status: status,
+	}
+	mock.lockUpdateTask.Lock()
+	mock.calls.UpdateTask = append(mock.calls.UpdateTask, callInfo)
+	mock.lockUpdateTask.Unlock()
+	return mock.UpdateTaskFunc(ctx, id, title, status)
+}
+
+// UpdateTaskCalls gets all the calls that were made to UpdateTask.
+// Check the length with:
+//
+//	len(mockedUpdateTaskService.UpdateTaskCalls())
+func (mock *UpdateTaskServiceMock) UpdateTaskCalls() []struct {
+	Ctx    context.Context
+	ID     int64
+	Title  string
+	Status string
+} {
+	var calls []struct {
+		Ctx    context.Context
+		ID     int64
+		Title  string
+		Status string
+	}
+	mock.lockUpdateTask.RLock()
+	calls = mock.calls.UpdateTask
+	mock.lockUpdateTask.RUnlock()
+	return calls
+}
+
+// Ensure, that DeleteTaskServiceMock does implement DeleteTaskService.
+// If this is not the case, regenerate this file with moq.
+var _ DeleteTaskService = &DeleteTaskServiceMock{}
+
+// DeleteTaskServiceMock is a mock implementation of DeleteTaskService.
+//
+//	func TestSomethingThatUsesDeleteTaskService(t *testing.T) {
+//
+//		// make and configure a mocked DeleteTaskService
+//		mockedDeleteTaskService := &DeleteTaskServiceMock{
+//			DeleteTaskFunc: func(ctx context.Context, id int64) (int64, error) {
+//				panic("mock out the DeleteTask method")
+//			},
+//		}
+//
+//		// use mockedDeleteTaskService in code that requires DeleteTaskService
+//		// and then make assertions.
+//
+//	}
+type DeleteTaskServiceMock struct {
+	// DeleteTaskFunc mocks the DeleteTask method.
+	DeleteTaskFunc func(ctx context.Context, id int64) (int64, error)
+
+	// calls tracks calls to the methods.
+	calls struct {
+		// DeleteTask holds details about calls to the DeleteTask method.
+		DeleteTask []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+			// ID is the id argument value.
+			ID int64
+		}
+	}
+	lockDeleteTask sync.RWMutex
+}
+
+// DeleteTask calls DeleteTaskFunc.
+func (mock *DeleteTaskServiceMock) DeleteTask(ctx context.Context, id int64) (int64, error) {
+	if mock.DeleteTaskFunc == nil {
+		panic("DeleteTaskServiceMock.DeleteTaskFunc: method is nil but DeleteTaskService.DeleteTask was just called")
+	}
+	callInfo := struct {
+		Ctx context.Context
+		ID  int64
+	}{
+		Ctx: ctx,
+		ID:  id,
+	}
+	mock.lockDeleteTask.Lock()
+	mock.calls.DeleteTask = append(mock.calls.DeleteTask, callInfo)
+	mock.lockDeleteTask.Unlock()
+	return mock.DeleteTaskFunc(ctx, id)
+}
+
+// DeleteTaskCalls gets all the calls that were made to DeleteTask.
+// Check the length with:
+//
+//	len(mockedDeleteTaskService.DeleteTaskCalls())
+func (mock *DeleteTaskServiceMock) DeleteTaskCalls() []struct {
+	Ctx context.Context
+	ID  int64
+} {
+	var calls []struct {
+		Ctx context.Context
+		ID  int64
+	}
+	mock.lockDeleteTask.RLock()
+	calls = mock.calls.DeleteTask
+	mock.lockDeleteTask.RUnlock()
+	return calls
+}
+
 // Ensure, that RegisterUserServiceMock does implement RegisterUserService.
 // If this is not the case, regenerate this file with moq.
 var _ RegisterUserService = &RegisterUserServiceMock{}
@@ -313,7 +469,7 @@ var _ LoginService = &LoginServiceMock{}
 //
 //		// make and configure a mocked LoginService
 //		mockedLoginService := &LoginServiceMock{
-//			LoginFunc: func(ctx context.Context, name string, pw string) (string, error) {
+//			LoginFunc: func(ctx context.Context, name string, pw string) (string, string, error) {
 //				panic("mock out the Login method")
 //			},
 //		}
@@ -324,7 +480,7 @@ var _ LoginService = &LoginServiceMock{}
 //	}
 type LoginServiceMock struct {
 	// LoginFunc mocks the Login method.
-	LoginFunc func(ctx context.Context, name string, pw string) (string, error)
+	LoginFunc func(ctx context.Context, name string, pw string) (string, string, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -342,7 +498,7 @@ type LoginServiceMock struct {
 }
 
 // Login calls LoginFunc.
-func (mock *LoginServiceMock) Login(ctx context.Context, name string, pw string) (string, error) {
+func (mock *LoginServiceMock) Login(ctx context.Context, name string, pw string) (string, string, error) {
 	if mock.LoginFunc == nil {
 		panic("LoginServiceMock.LoginFunc: method is nil but LoginService.Login was just called")
 	}

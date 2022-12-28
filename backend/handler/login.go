@@ -36,7 +36,7 @@ func (l *Login) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Service呼び出し
-	jwt, err := l.Service.Login(ctx, body.UserName, body.Password)
+	jwt, role, err := l.Service.Login(ctx, body.UserName, body.Password)
 	if err != nil {
 		RespondJSON(ctx, w, &ErrResponse{
 			Message: err.Error(),
@@ -46,8 +46,10 @@ func (l *Login) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	rsp := struct {
 		AccessToken string `json:"access_token"`
+		Role        string `json:"role"`
 	}{
 		AccessToken: jwt,
+		Role:        role,
 	}
 
 	RespondJSON(ctx, w, rsp, http.StatusOK)

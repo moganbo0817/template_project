@@ -15,6 +15,7 @@ import (
 func TestLogin_ServeHTTP(t *testing.T) {
 	type moq struct {
 		token string
+		role  string
 		err   error
 	}
 
@@ -33,6 +34,7 @@ func TestLogin_ServeHTTP(t *testing.T) {
 			reqFile: "testdata/login/ok_req.json.golden",
 			moq: moq{
 				token: "from_moq",
+				role:  "admin",
 			},
 			want: want{
 				status:  http.StatusOK,
@@ -75,8 +77,8 @@ func TestLogin_ServeHTTP(t *testing.T) {
 			moq := &LoginServiceMock{}
 			moq.LoginFunc = func(
 				ctx context.Context, name, pw string,
-			) (string, error) {
-				return tt.moq.token, tt.moq.err
+			) (string, string, error) {
+				return tt.moq.token, tt.moq.role, tt.moq.err
 			}
 			sut := Login{
 				Service:   moq,

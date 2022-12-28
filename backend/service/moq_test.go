@@ -88,6 +88,84 @@ func (mock *TaskAdderMock) AddTaskCalls() []struct {
 	return calls
 }
 
+// Ensure, that TaskUpdateMock does implement TaskUpdate.
+// If this is not the case, regenerate this file with moq.
+var _ TaskUpdate = &TaskUpdateMock{}
+
+// TaskUpdateMock is a mock implementation of TaskUpdate.
+//
+//	func TestSomethingThatUsesTaskUpdate(t *testing.T) {
+//
+//		// make and configure a mocked TaskUpdate
+//		mockedTaskUpdate := &TaskUpdateMock{
+//			UpdateTaskFunc: func(ctx context.Context, db store.Execer, t *entity.Task) (int64, error) {
+//				panic("mock out the UpdateTask method")
+//			},
+//		}
+//
+//		// use mockedTaskUpdate in code that requires TaskUpdate
+//		// and then make assertions.
+//
+//	}
+type TaskUpdateMock struct {
+	// UpdateTaskFunc mocks the UpdateTask method.
+	UpdateTaskFunc func(ctx context.Context, db store.Execer, t *entity.Task) (int64, error)
+
+	// calls tracks calls to the methods.
+	calls struct {
+		// UpdateTask holds details about calls to the UpdateTask method.
+		UpdateTask []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+			// Db is the db argument value.
+			Db store.Execer
+			// T is the t argument value.
+			T *entity.Task
+		}
+	}
+	lockUpdateTask sync.RWMutex
+}
+
+// UpdateTask calls UpdateTaskFunc.
+func (mock *TaskUpdateMock) UpdateTask(ctx context.Context, db store.Execer, t *entity.Task) (int64, error) {
+	if mock.UpdateTaskFunc == nil {
+		panic("TaskUpdateMock.UpdateTaskFunc: method is nil but TaskUpdate.UpdateTask was just called")
+	}
+	callInfo := struct {
+		Ctx context.Context
+		Db  store.Execer
+		T   *entity.Task
+	}{
+		Ctx: ctx,
+		Db:  db,
+		T:   t,
+	}
+	mock.lockUpdateTask.Lock()
+	mock.calls.UpdateTask = append(mock.calls.UpdateTask, callInfo)
+	mock.lockUpdateTask.Unlock()
+	return mock.UpdateTaskFunc(ctx, db, t)
+}
+
+// UpdateTaskCalls gets all the calls that were made to UpdateTask.
+// Check the length with:
+//
+//	len(mockedTaskUpdate.UpdateTaskCalls())
+func (mock *TaskUpdateMock) UpdateTaskCalls() []struct {
+	Ctx context.Context
+	Db  store.Execer
+	T   *entity.Task
+} {
+	var calls []struct {
+		Ctx context.Context
+		Db  store.Execer
+		T   *entity.Task
+	}
+	mock.lockUpdateTask.RLock()
+	calls = mock.calls.UpdateTask
+	mock.lockUpdateTask.RUnlock()
+	return calls
+}
+
 // Ensure, that TaskListersMock does implement TaskListers.
 // If this is not the case, regenerate this file with moq.
 var _ TaskListers = &TaskListersMock{}
