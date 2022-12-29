@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext} from "react";
 import './index.css';
 import { Button, Checkbox, Form, Input,Row,Col,message } from 'antd';
 import { useNavigate } from "react-router-dom";
 import httpClient from "../../utils/httpClient"
 import {user} from "../../model/user"
+import GlobalStore from "../../components/GlobalStore";
 //import { useCookies } from "react-cookie";
 
 const Login: React.FC = () => {
@@ -11,7 +12,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm<user>();
   const [messageApi, contextHolder] = message.useMessage();
-  //const [cookies, setCookie, removeCookie] = useCookies(["name"]);
+  const { dispatchGlobal } = useContext(GlobalStore);
 
   const onFinish = async(values: any) => {
     console.log('Success:', values);
@@ -23,6 +24,12 @@ const Login: React.FC = () => {
       const res = await httpClient.post<user>("/login",req);
       //setCookie("name", inputVal);
       localStorage.setItem("token", res.data.access_token||"")
+      dispatchGlobal({
+        type: 'LOGIN',
+        payload: {
+          role: res.data.role,
+        },
+      })
       navigate("/task");
     } catch(err) {
       messageApi.open({

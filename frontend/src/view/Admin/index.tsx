@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import {
   DesktopOutlined,
   FileOutlined,
@@ -10,7 +10,7 @@ import type { MenuProps } from "antd";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { Breadcrumb, Layout, Menu } from "antd";
-import Book from "../Book";
+import GlobalStore from "../../components/GlobalStore";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -30,17 +30,6 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
-  getItem("Public", "public", <TeamOutlined />, [
-    getItem("Tasks", "1"),
-    getItem("Todo", "2"),
-  ]),
-  getItem("Admin", "admin", <UserOutlined />, [
-    getItem("User", "3"),
-    getItem("Todo", "4"),
-  ]),
-];
-
 type AdminPropsType = {
   children: any;
   activeKey: string;
@@ -48,26 +37,38 @@ type AdminPropsType = {
 };
 
 const Admin: React.FC<any> = (props: AdminPropsType) => {
+  const [items, setItems] = useState<MenuItem[]>();
   const [collapsed, setCollapsed] = useState(false);
-  //const [activeKey, setActiveKey] = useState<string>('2');
-
   const [menuNo, setMenuNo] = useState<number>(1);
   const navigate = useNavigate();
+  const { globalStore } = useContext(GlobalStore);
+
   const menuClickHandle = (item: any) => {
-    // Menu毎にURLきったほうがいいかも
-    // けどなんかちらついてうざい・・・
-    // URLでルーティングするのとDOMの表示、非表示どっちがいいんだ
     setMenuNo(item.key);
     if (item.key == 1) {
       navigate("/task");
     } else if (item.key == 2) {
       navigate("/book");
+    } else if (item.key == 3) {
+      navigate("/user");
     }
   };
 
-  // useEffect(() => {
-
-  // }, [menuNo]);
+  useEffect(() => {
+    const menu: MenuItem[] = [
+      getItem("Public", "public", <TeamOutlined />, [
+        getItem("Tasks", "1"),
+        getItem("Todo", "2"),
+      ]),
+    ];
+    if (globalStore.role == 'admin') {
+      menu.push(getItem("Admin", "admin", <UserOutlined />, [
+        getItem("User", "3"),
+        getItem("Todo", "4"),
+      ]));
+    }
+    setItems(menu);
+  }, []);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
