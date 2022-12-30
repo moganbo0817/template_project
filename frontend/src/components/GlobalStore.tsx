@@ -14,6 +14,7 @@ type DispatchGlobalStore = {
 /** グローバルステート
 React.Context と useReducer で実現しています
 
+@return {Context} GlobalStore
 
 使い方の例
 

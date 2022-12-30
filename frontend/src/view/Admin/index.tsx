@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect,useContext, useMemo } from "react";
 import {
   DesktopOutlined,
   FileOutlined,
@@ -9,7 +9,7 @@ import {
 import type { MenuProps } from "antd";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
-import { Breadcrumb, Layout, Menu } from "antd";
+import { Layout, Menu } from "antd";
 import GlobalStore from "../../components/GlobalStore";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -50,18 +50,19 @@ const Admin: React.FC<any> = (props: AdminPropsType) => {
     } else if (item.key == 2) {
       navigate("/book");
     } else if (item.key == 3) {
-      navigate("/user");
+      navigate("/userdetail");
     }
   };
 
-  useEffect(() => {
+  useMemo(() => {
     const menu: MenuItem[] = [
       getItem("Public", "public", <TeamOutlined />, [
         getItem("Tasks", "1"),
         getItem("Todo", "2"),
       ]),
     ];
-    if (globalStore.role == 'admin') {
+    const role = localStorage.getItem("role");
+    if (role == 'admin') {
       menu.push(getItem("Admin", "admin", <UserOutlined />, [
         getItem("User", "3"),
         getItem("Todo", "4"),
