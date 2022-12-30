@@ -11,27 +11,6 @@ type DispatchGlobalStore = {
   payload: GlobalStoreType;
 };
 
-/** グローバルステート
-React.Context と useReducer で実現しています
-
-@return {Context} GlobalStore
-
-使い方の例
-
-```
-import GlobalStore from 'utils/GlobalStore';
-const { globalStore, dispatchGlobal } = useContext(GlobalStore);
-// 読み取り
-console.log(globalStore.current);
-// 更新
-dispatch({
-  type: 'LOAD_SOMETHING'
-  payload: {
-    content: 'hello someone!!'
-  }
-})
-```
-*/
 const GlobalStore = createContext({
   globalStore: {} as GlobalStoreType,
   dispatchGlobal: {} as Dispatch<DispatchGlobalStore>,
@@ -41,7 +20,6 @@ export default GlobalStore;
 
 const reducer = (globalStore: GlobalStoreType = {}, action: DispatchGlobalStore): GlobalStoreType => {
   switch (action.type) {
-    // action を追加する場合、 GlobalStoreAction のエイリアスにも追加してください
     case 'LOGIN':
       return {
         ...globalStore,
