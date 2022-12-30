@@ -7,6 +7,7 @@ import Book from "./view/Book";
 import Login from "./view/Login";
 import BookDetail from "./view/BookDetail";
 import TaskDetail from "./view/TaskDetail";
+import UserDetail from "./view/UserDetail";
 import {GlobalStoreProvider} from "./components/GlobalStore";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -23,6 +24,7 @@ function App() {
           <Route path={`/bookdetail/:id`} element={<BookDetail />} />
           <Route path={`/taskdetail/:id`} element={<TaskDetail />} />
           <Route path={`/taskdetail`} element={<TaskDetail />} />
+          <Route path={`/userdetail`} element={<UserDetail />} />
         </Routes>
       </BrowserRouter>
     </GlobalStoreProvider>

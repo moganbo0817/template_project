@@ -3,27 +3,27 @@ import './index.css';
 import { Button, Checkbox, Form, Input,Row,Col,message } from 'antd';
 import { useNavigate } from "react-router-dom";
 import httpClient from "../../utils/httpClient"
-import {user} from "../../model/user"
+import {loginUser} from "../../model/loginUser"
 import GlobalStore from "../../components/GlobalStore";
 //import { useCookies } from "react-cookie";
 
 const Login: React.FC = () => {
 
   const navigate = useNavigate();
-  const [form] = Form.useForm<user>();
+  const [form] = Form.useForm<loginUser>();
   const [messageApi, contextHolder] = message.useMessage();
   const { dispatchGlobal } = useContext(GlobalStore);
 
   const onFinish = async(values: any) => {
     console.log('Success:', values);
     try{
-      const req:user = {
+      const req:loginUser = {
         user_name :form.getFieldValue('username'),
         password:form.getFieldValue('password'),
       } 
-      const res = await httpClient.post<user>("/login",req);
-      //setCookie("name", inputVal);
+      const res = await httpClient.post<loginUser>("/login",req);
       localStorage.setItem("token", res.data.access_token||"")
+      localStorage.setItem("role", res.data.role||"")
       dispatchGlobal({
         type: 'LOGIN',
         payload: {

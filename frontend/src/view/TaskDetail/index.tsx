@@ -1,6 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Space, Table, Tag, Select, Row, Col } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import { Select } from "antd";
 import './index.css';
 import Admin from "../Admin";
 import { Button, Checkbox, Form, Input, message } from "antd";
@@ -14,7 +13,6 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-//const Book: React.FC = () => <Table columns={columns} dataSource={data} />;
 const TaskDetail: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm<task>();
@@ -70,7 +68,10 @@ const TaskDetail: React.FC = () => {
       setTask(res.data);
       form.resetFields();
     } catch(err) {
-      console.log("error");
+      messageApi.open({
+        type: "error",
+        content: "This is an error message",
+      });
     }
   };
 
@@ -84,7 +85,10 @@ const TaskDetail: React.FC = () => {
       });
       navigate("/taskdetail/" + res.data.id);
     } catch(err) {
-      console.log("error");
+      messageApi.open({
+        type: "error",
+        content: "This is an error message",
+      });
     }
   };
 
@@ -96,7 +100,10 @@ const TaskDetail: React.FC = () => {
         content: "This is a success message",
       });
     } catch(err) {
-      console.log("error");
+      messageApi.open({
+        type: "error",
+        content: "This is an error message",
+      });
     }
   };
 
@@ -113,7 +120,10 @@ const TaskDetail: React.FC = () => {
         form.setFieldValue('status',undefined);
         navigate("/taskdetail");
       } catch(err) {
-        console.log("error");
+        messageApi.open({
+          type: "error",
+          content: "This is an error message",
+        });
       }
     }
   };

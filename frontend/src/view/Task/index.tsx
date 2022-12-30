@@ -53,7 +53,6 @@ const columns: ColumnsType<DataType> = [
 ];
 
 const User: React.FC = () => {
-
   const [data, setData] = useState<DataType[]>()
 
 useEffect(() => {

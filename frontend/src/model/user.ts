@@ -1,6 +1,6 @@
 export type user ={
-    user_name:string;
+    id?:number;
+    name:string;
     password:string;
     role?:string;
-    access_token?:string;
 }
