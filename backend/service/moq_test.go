@@ -20,7 +20,7 @@ var _ TaskAdder = &TaskAdderMock{}
 //
 //		// make and configure a mocked TaskAdder
 //		mockedTaskAdder := &TaskAdderMock{
-//			AddTaskFunc: func(ctx context.Context, db store.Execer, t *entity.Task) error {
+//			AddTaskFunc: func(ctx context.Context, db store.Beginner, t *entity.Task) error {
 //				panic("mock out the AddTask method")
 //			},
 //		}
@@ -31,7 +31,7 @@ var _ TaskAdder = &TaskAdderMock{}
 //	}
 type TaskAdderMock struct {
 	// AddTaskFunc mocks the AddTask method.
-	AddTaskFunc func(ctx context.Context, db store.Execer, t *entity.Task) error
+	AddTaskFunc func(ctx context.Context, db store.Beginner, t *entity.Task) error
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -40,7 +40,7 @@ type TaskAdderMock struct {
 			// Ctx is the ctx argument value.
 			Ctx context.Context
 			// Db is the db argument value.
-			Db store.Execer
+			Db store.Beginner
 			// T is the t argument value.
 			T *entity.Task
 		}
@@ -49,13 +49,13 @@ type TaskAdderMock struct {
 }
 
 // AddTask calls AddTaskFunc.
-func (mock *TaskAdderMock) AddTask(ctx context.Context, db store.Execer, t *entity.Task) error {
+func (mock *TaskAdderMock) AddTask(ctx context.Context, db store.Beginner, t *entity.Task) error {
 	if mock.AddTaskFunc == nil {
 		panic("TaskAdderMock.AddTaskFunc: method is nil but TaskAdder.AddTask was just called")
 	}
 	callInfo := struct {
 		Ctx context.Context
-		Db  store.Execer
+		Db  store.Beginner
 		T   *entity.Task
 	}{
 		Ctx: ctx,
@@ -74,12 +74,12 @@ func (mock *TaskAdderMock) AddTask(ctx context.Context, db store.Execer, t *enti
 //	len(mockedTaskAdder.AddTaskCalls())
 func (mock *TaskAdderMock) AddTaskCalls() []struct {
 	Ctx context.Context
-	Db  store.Execer
+	Db  store.Beginner
 	T   *entity.Task
 } {
 	var calls []struct {
 		Ctx context.Context
-		Db  store.Execer
+		Db  store.Beginner
 		T   *entity.Task
 	}
 	mock.lockAddTask.RLock()

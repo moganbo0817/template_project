@@ -9,7 +9,7 @@ import (
 
 //go:generate go run github.com/matryer/moq -out moq_test.go . TaskAdder TaskUpdate TaskListers TaskLister UserRegister UserGetter TokenGenerator
 type TaskAdder interface {
-	AddTask(ctx context.Context, db store.Execer, t *entity.Task) error
+	AddTask(ctx context.Context, db store.Beginner, t *entity.Task) error
 }
 
 type TaskListers interface {

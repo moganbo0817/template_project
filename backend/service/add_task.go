@@ -9,7 +9,7 @@ import (
 )
 
 type AddTask struct {
-	DB   store.Execer
+	DB   store.Beginner
 	Repo TaskAdder
 }
 

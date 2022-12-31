@@ -7,12 +7,14 @@ import (
 )
 
 func (r *Repository) AddTask(
-	ctx context.Context, db Execer, t *entity.Task,
+	ctx context.Context, db Beginner, t *entity.Task,
 ) error {
 	t.Created = r.Clocker.Now()
 	t.Modified = r.Clocker.Now()
+	tx, _ := db.BeginTx(ctx, nil)
+	defer tx.Rollback()
 	sql := `INSERT INTO task (title, status, created, modified) VALUES (?, ?, ?, ?);`
-	result, err := db.ExecContext(
+	result, err := tx.ExecContext(
 		ctx, sql, t.Title, t.Status,
 		t.Created, t.Modified,
 	)
@@ -23,6 +25,7 @@ func (r *Repository) AddTask(
 	if err != nil {
 		return err
 	}
+	tx.Commit()
 	t.ID = entity.TaskID(id)
 	return nil
 }
