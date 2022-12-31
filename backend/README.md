@@ -10,4 +10,4 @@ https://www.progresstype.com/2019/04/gnu-make.html
 DB つながんねえ？下のコマンドでコンテナ入って新しくユーザ追加する..
 https://zenn.dev/ryo_kawamata/articles/mysql-connect-error
 
-docker compose exec todo-db bash
+docker compose exec temp_project bash
